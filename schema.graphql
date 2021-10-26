@@ -32,4 +32,38 @@ type Realm @entity {
   allowMultiInfuse: Boolean!
   allowPublicInfusion: Boolean!
   allowAllCollections: Boolean!
+
+  admins: [RealmAdmin!]! @derivedFrom(field: "realm")
+  infusers: [RealmInfuser!]! @derivedFrom(field: "realm")
+}
+
+type Account @entity {
+  """
+  address
+  """
+  id: ID!
+  realmAdmins: [RealmAdmin!]! @derivedFrom(field: "account")
+  realmInfusers: [RealmInfuser!]! @derivedFrom(field: "account")
+}
+
+type RealmAdmin @entity {
+  id: ID!
+  account: Account!
+  realm: Realm!
+
+  """
+  Block that this admin was added
+  """
+  createdAt: BigInt!
+}
+
+type RealmInfuser @entity {
+  id: ID!
+  account: Account!
+  realm: Realm!
+
+  """
+  Block that this infuser was added
+  """
+  createdAt: BigInt!
 }

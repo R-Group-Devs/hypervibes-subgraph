@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { Address, crypto } from "@graphprotocol/graph-ts"
 import {
   HyperVIBES,
   AdminAdded,
@@ -11,9 +11,29 @@ import {
   InfuserRemoved,
   RealmCreated
 } from "../generated/HyperVIBES/HyperVIBES"
-import { Realm } from '../generated/schema'
+import { Account, Realm, RealmAdmin, RealmInfuser } from '../generated/schema'
 
-export function handleAdminAdded(event: AdminAdded): void { }
+const getOrCreateAccount = (account: Address): Account => {
+  const id = account.toHexString();
+  const existing = Account.load(id);
+  if (existing != null) {
+    return existing;
+  }
+  const entity = new Account(id);
+  entity.save();
+  return entity;
+}
+
+export function handleAdminAdded(event: AdminAdded): void {
+  const account = getOrCreateAccount(event.params.admin);
+  const realmId = event.params.realmId.toString();
+  const realmAdminId = `${realmId}-${account.id}`;
+  const realmAdmin = new RealmAdmin(realmAdminId);
+  realmAdmin.realm = realmId;
+  realmAdmin.account = account.id;
+  realmAdmin.createdAt = event.block.number;
+  realmAdmin.save();
+}
 
 export function handleAdminRemoved(event: AdminRemoved): void { }
 
@@ -25,7 +45,16 @@ export function handleCollectionRemoved(event: CollectionRemoved): void { }
 
 export function handleInfused(event: Infused): void { }
 
-export function handleInfuserAdded(event: InfuserAdded): void { }
+export function handleInfuserAdded(event: InfuserAdded): void {
+  const account = getOrCreateAccount(event.params.infuser);
+  const realmId = event.params.realmId.toString();
+  const realmInfuserId = `${realmId}-${account.id}`;
+  const realmInfuser = new RealmInfuser(realmInfuserId);
+  realmInfuser.realm = realmId;
+  realmInfuser.account = account.id;
+  realmInfuser.createdAt = event.block.number;
+  realmInfuser.save();
+}
 
 export function handleInfuserRemoved(event: InfuserRemoved): void { }
 
