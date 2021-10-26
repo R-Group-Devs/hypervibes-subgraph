@@ -21,7 +21,7 @@ Install dependencies:
 yarn
 ```
 
-Generate TypeScript bindings from ABIs and graph schema:
+Generate AssemblyScript bindings from ABIs and graph schema:
 
 ```
 yarn codegen
