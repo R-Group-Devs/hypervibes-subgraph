@@ -2,4 +2,34 @@ type Realm @entity {
   id: ID!
   name: String!
   description: String!
+
+  """
+  Block this realm was created at
+  """
+  createdAt: BigInt!
+
+  """
+  Block this realm was last modified at
+  """
+  modifiedAt: BigInt!
+
+  # immutable data
+
+  """
+  erc20 token contract address
+  """
+  token: String!
+
+
+  # constraints
+
+  minDailyRate: BigInt!
+  maxDailyRate: BigInt!
+  minInfusionAmount: BigInt!
+  maxInfusionAmount: BigInt!
+  maxTokenBalance: BigInt!
+  requireNftIsOwned: Boolean!
+  allowMultiInfuse: Boolean!
+  allowPublicInfusion: Boolean!
+  allowAllCollections: Boolean!
 }
