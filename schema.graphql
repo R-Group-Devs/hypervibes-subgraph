@@ -2,24 +2,12 @@ type Realm @entity {
   id: ID!
   name: String!
   description: String!
-
-  """
-  Block this realm was created at
-  """
   createdAt: BigInt!
-
-  """
-  Block this realm was last modified at
-  """
   modifiedAt: BigInt!
 
   # immutable data
 
-  """
-  erc20 token contract address
-  """
   token: String!
-
 
   # constraints
 
@@ -33,37 +21,60 @@ type Realm @entity {
   allowPublicInfusion: Boolean!
   allowAllCollections: Boolean!
 
-  admins: [RealmAdmin!]! @derivedFrom(field: "realm")
-  infusers: [RealmInfuser!]! @derivedFrom(field: "realm")
+  # relationships
+
+  realmAdmins: [RealmAdmin!]! @derivedFrom(field: "realm")
+  realmInfusers: [RealmInfuser!]! @derivedFrom(field: "realm")
+  realmCollections: [RealmCollection!]! @derivedFrom(field: "realm")
+  infusions: [Infusion!]! @derivedFrom(field: "realm")
 }
 
 type Account @entity {
-  """
-  address
-  """
   id: ID!
   realmAdmins: [RealmAdmin!]! @derivedFrom(field: "account")
   realmInfusers: [RealmInfuser!]! @derivedFrom(field: "account")
 }
 
+type NFT @entity {
+  id: ID!
+  tokenId: BigInt!
+  collection: Collection!
+  infusions: [Infusion!]! @derivedFrom(field: "nft")
+}
+
+type Collection @entity {
+  id: ID!
+  nfts: [NFT!]! @derivedFrom(field: "collection")
+  realmCollections: [RealmCollection!]! @derivedFrom(field: "collection")
+}
+
 type RealmAdmin @entity {
   id: ID!
+  createdAt: BigInt!
   account: Account!
   realm: Realm!
-
-  """
-  Block that this admin was added
-  """
-  createdAt: BigInt!
 }
 
 type RealmInfuser @entity {
   id: ID!
+  createdAt: BigInt!
   account: Account!
   realm: Realm!
-
-  """
-  Block that this infuser was added
-  """
-  createdAt: BigInt!
 }
+
+type RealmCollection @entity {
+  id: ID!
+  createdAt: BigInt!
+  collection: Collection!
+  realm: Realm!
+}
+
+type Infusion @entity {
+  id: ID!
+  realm: Realm!
+  nft: NFT!
+  dailyRate: BigInt!
+  balance: BigInt!
+  lastClaimAt: BigInt!
+}
+
