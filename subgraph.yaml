@@ -1,0 +1,40 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: HyperVIBES
+    network: ropsten
+    source:
+      address: "0x76e9f19D76Ae534cFb754AFE9D9CC52395E5fFaF"
+      abi: HyperVIBES
+      # https://ropsten.etherscan.io/tx/0xc6e7abdf734648fc94e78d26ac6a7786ab91782c81b800b1bb615662480e6e87
+      startBlock: 11262749
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities: [ ]
+      abis:
+        - name: HyperVIBES
+          file: ./abis/HyperVIBES.json
+      eventHandlers:
+        - event: AdminAdded(indexed uint256,indexed address)
+          handler: handleAdminAdded
+        - event: AdminRemoved(indexed uint256,indexed address)
+          handler: handleAdminRemoved
+        - event: Claimed(indexed uint256,indexed address,indexed uint256,uint256)
+          handler: handleClaimed
+        - event: CollectionAdded(indexed uint256,indexed address)
+          handler: handleCollectionAdded
+        - event: CollectionRemoved(indexed uint256,indexed address)
+          handler: handleCollectionRemoved
+        - event: Infused(indexed uint256,indexed address,indexed uint256,address,uint256,uint256,string)
+          handler: handleInfused
+        - event: InfuserAdded(indexed uint256,indexed address)
+          handler: handleInfuserAdded
+        - event: InfuserRemoved(indexed uint256,indexed address)
+          handler: handleInfuserRemoved
+        - event: RealmCreated(indexed uint256,string,string)
+          handler: handleRealmCreated
+      file: ./src/mapping.ts

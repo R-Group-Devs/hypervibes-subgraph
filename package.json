@@ -1,0 +1,16 @@
+{
+  "name": "hypervibes",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ r-group-devs/hypervibes",
+    "create-local": "graph create --node http://localhost:8020/ r-group-devs/hypervibes",
+    "remove-local": "graph remove --node http://localhost:8020/ r-group-devs/hypervibes",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 r-group-devs/hypervibes"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.23.0",
+    "@graphprotocol/graph-ts": "0.22.1"
+  }
+}

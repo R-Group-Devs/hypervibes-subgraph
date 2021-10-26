@@ -1,0 +1,5 @@
+type Realm @entity {
+  id: ID!
+  name: String!
+  description: String!
+}
