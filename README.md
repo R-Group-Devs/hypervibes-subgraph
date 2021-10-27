@@ -11,7 +11,9 @@ Subgraph for HyperVIBES project.
 
 ## Current Deployments
 
-* https://thegraph.com/hosted-service/subgraph/r-group-devs/hypervibes
+* mainnet - N/A
+* Polygon - N/A
+* Ropsten - https://thegraph.com/hosted-service/subgraph/r-group-devs/hypervibes-ropsten
 
 ## Development
 
