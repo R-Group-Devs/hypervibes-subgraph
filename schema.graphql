@@ -2,8 +2,10 @@ type Realm @entity {
   id: ID!
   name: String!
   description: String!
-  createdAt: BigInt!
-  modifiedAt: BigInt!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+  modifiedAtBlock: BigInt!
+  modifiedAtTimestamp: BigInt!
 
   # immutable data
 
@@ -50,21 +52,24 @@ type Collection @entity {
 
 type RealmAdmin @entity {
   id: ID!
-  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
   account: Account!
   realm: Realm!
 }
 
 type RealmInfuser @entity {
   id: ID!
-  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
   account: Account!
   realm: Realm!
 }
 
 type RealmCollection @entity {
   id: ID!
-  createdAt: BigInt!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
   collection: Collection!
   realm: Realm!
 }
@@ -75,6 +80,23 @@ type Infusion @entity {
   nft: NFT!
   dailyRate: BigInt!
   balance: BigInt!
-  lastClaimAt: BigInt!
+  lastClaimAtTimestamp: BigInt!
+  events: [InfusionEvent!]! @derivedFrom(field: "infusion")
+}
+
+enum InfusionEventType {
+  CLAIM
+  INFUSE
+}
+
+type InfusionEvent @entity {
+  id: ID!
+  infusion: Infusion!
+  eventType: InfusionEventType!
+  msgSender: String!
+  transactionHash: String!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+  amount: BigInt!
 }
 

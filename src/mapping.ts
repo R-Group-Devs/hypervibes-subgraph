@@ -56,7 +56,8 @@ export function handleAdminAdded(event: AdminAdded): void {
   const realmAdmin = new RealmAdmin(realmAdminId);
   realmAdmin.realm = realmId;
   realmAdmin.account = account.id;
-  realmAdmin.createdAt = event.block.number;
+  realmAdmin.createdAtBlock = event.block.number;
+  realmAdmin.createdAtTimestamp = event.block.timestamp;
   realmAdmin.save();
 }
 
@@ -78,7 +79,8 @@ export function handleCollectionAdded(event: CollectionAdded): void {
   const realmCollection = new RealmCollection(realmCollectionId);
   realmCollection.realm = realmId;
   realmCollection.collection = collection.id;
-  realmCollection.createdAt = event.block.number;
+  realmCollection.createdAtBlock = event.block.number;
+  realmCollection.createdAtTimestamp = event.block.timestamp;
   realmCollection.save();
 }
 
@@ -117,7 +119,8 @@ export function handleInfuserAdded(event: InfuserAdded): void {
   const realmInfuser = new RealmInfuser(realmInfuserId);
   realmInfuser.realm = realmId;
   realmInfuser.account = account.id;
-  realmInfuser.createdAt = event.block.number;
+  realmInfuser.createdAtBlock = event.block.number;
+  realmInfuser.createdAtTimestamp = event.block.timestamp;
   realmInfuser.save();
 }
 
@@ -134,8 +137,10 @@ export function handleRealmCreated(event: RealmCreated): void {
 
   realm.name = event.params.name;
   realm.description = event.params.description;
-  realm.createdAt = event.block.number;
-  realm.modifiedAt = event.block.number;
+  realm.createdAtBlock = event.block.number;
+  realm.createdAtTimestamp = event.block.timestamp;
+  realm.modifiedAtBlock = event.block.number;
+  realm.modifiedAtTimestamp = event.block.timestamp;
 
   const contract = HyperVIBES.bind(event.address);
   const config = contract.realmConfig(realmId);
