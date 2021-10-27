@@ -7,8 +7,6 @@ type Realm @entity {
   modifiedAtBlock: BigInt!
   modifiedAtTimestamp: BigInt!
 
-  # immutable data
-
   token: String!
 
   # constraints
@@ -33,8 +31,11 @@ type Realm @entity {
 
 type Account @entity {
   id: ID!
+  address: String!
   realmAdmins: [RealmAdmin!]! @derivedFrom(field: "account")
   realmInfusers: [RealmInfuser!]! @derivedFrom(field: "account")
+  infusionEventsAsMsgSender: [InfusionEvent!]! @derivedFrom(field: "msgSender")
+  infusionEventsAsTarget: [InfusionEvent!]! @derivedFrom(field: "target")
 }
 
 type NFT @entity {
@@ -46,6 +47,7 @@ type NFT @entity {
 
 type Collection @entity {
   id: ID!
+  address: String!
   nfts: [NFT!]! @derivedFrom(field: "collection")
   realmCollections: [RealmCollection!]! @derivedFrom(field: "collection")
 }
@@ -93,10 +95,12 @@ type InfusionEvent @entity {
   id: ID!
   infusion: Infusion!
   eventType: InfusionEventType!
-  msgSender: String!
+  msgSender: Account!
+  target: Account!
   transactionHash: String!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
   amount: BigInt!
+  comment: String
 }
 
