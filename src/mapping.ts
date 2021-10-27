@@ -1,4 +1,4 @@
-import { Address, BigInt } from "@graphprotocol/graph-ts"
+import { Address, BigInt, store } from "@graphprotocol/graph-ts"
 import {
   HyperVIBES,
   AdminAdded,
@@ -13,15 +13,15 @@ import {
 } from "../generated/HyperVIBES/HyperVIBES"
 import { Account, Collection, Infusion, NFT, Realm, RealmAdmin, RealmCollection, RealmInfuser } from '../generated/schema'
 
-const getOrCreateAccount = (account: Address): Account => {
-  const id = account.toHexString();
-  const existing = Account.load(id);
-  if (existing != null) {
-    return existing;
+const getOrCreateAccount = (address: Address): Account => {
+  const id = address.toHexString();
+  let account = Account.load(id);
+  if (account != null) {
+    return account;
   }
-  const entity = new Account(id);
-  entity.save();
-  return entity;
+  account = new Account(id);
+  account.save();
+  return account;
 }
 
 const getOrCreateCollection = (collectionAddress: Address): Collection => {
@@ -60,9 +60,16 @@ export function handleAdminAdded(event: AdminAdded): void {
   realmAdmin.save();
 }
 
-export function handleAdminRemoved(event: AdminRemoved): void { }
+export function handleAdminRemoved(event: AdminRemoved): void {
+  const realmId = event.params.realmId.toString();
+  const adminId = event.params.admin.toHexString();
+  const realmCollectionId = `${realmId}-${adminId}`;
+  store.remove('RealmAdmin', realmCollectionId)
+}
 
-export function handleClaimed(event: Claimed): void { }
+export function handleClaimed(event: Claimed): void {
+  // TODO
+}
 
 export function handleCollectionAdded(event: CollectionAdded): void {
   const collection = getOrCreateCollection(event.params.collection);
@@ -75,16 +82,22 @@ export function handleCollectionAdded(event: CollectionAdded): void {
   realmCollection.save();
 }
 
-export function handleCollectionRemoved(event: CollectionRemoved): void { }
+export function handleCollectionRemoved(event: CollectionRemoved): void {
+  const realmId = event.params.realmId.toString();
+  const collectionId = event.params.collection.toHexString();
+  const realmCollectionId = `${realmId}-${collectionId}`;
+  store.remove('RealmCollection', realmCollectionId)
+}
 
 export function handleInfused(event: Infused): void {
   const nft = getOrCreateNft(event.params.collection, event.params.tokenId);
 
-  const infusionId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
+  const realmId = event.params.realmId.toString();
+  const infusionId = `${realmId}-${nft.collection}-${nft.tokenId}`;
   let infusion = Infusion.load(infusionId);
   if (infusion == null) {
     infusion = new Infusion(infusionId);
-    infusion.realm = event.params.realmId.toString();
+    infusion.realm = realmId;
     infusion.nft = nft.id;
     infusion.dailyRate = event.params.dailyRate;
   }
@@ -108,7 +121,12 @@ export function handleInfuserAdded(event: InfuserAdded): void {
   realmInfuser.save();
 }
 
-export function handleInfuserRemoved(event: InfuserRemoved): void { }
+export function handleInfuserRemoved(event: InfuserRemoved): void {
+  const realmId = event.params.realmId.toString();
+  const realmInfuserId = event.params.infuser.toHexString();
+  const realmCollectionId = `${realmId}-${realmInfuserId}`;
+  store.remove('RealmCollection', realmCollectionId)
+}
 
 export function handleRealmCreated(event: RealmCreated): void {
   const realmId = event.params.realmId;
