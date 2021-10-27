@@ -34,6 +34,7 @@ export function handleRealmCreated(event: RealmCreated): void {
   realm.minDailyRate = constraints.minDailyRate;
   realm.maxDailyRate = constraints.maxDailyRate;
   realm.minInfusionAmount = constraints.minInfusionAmount;
+  realm.maxInfusionAmount = constraints.maxInfusionAmount;
   realm.maxTokenBalance = constraints.maxTokenBalance;
   realm.requireNftIsOwned = constraints.requireNftIsOwned;
   realm.allowMultiInfuse = constraints.allowMultiInfuse;
