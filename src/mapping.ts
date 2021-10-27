@@ -11,7 +11,7 @@ import {
   InfuserRemoved,
   RealmCreated
 } from "../generated/HyperVIBES/HyperVIBES"
-import { Realm, RealmAdmin, RealmCollection, RealmInfuser } from '../generated/schema'
+import { InfusionEvent, Realm, RealmAdmin, RealmCollection, RealmInfuser } from '../generated/schema'
 import { getOrCreateAccount, getOrCreateCollection, getOrCreateInfusion, getOrCreateNft } from "./entities";
 
 export function handleRealmCreated(event: RealmCreated): void {
@@ -105,16 +105,26 @@ export function handleInfused(event: Infused): void {
   const realmId = event.params.realmId.toString();
 
   const infusion = getOrCreateInfusion(realmId, nft);
-  infusion.dailyRate = event.params.dailyRate;
-
   const contract = HyperVIBES.bind(event.address);
   const data = contract.tokenData(event.params.realmId, event.params.collection, event.params.tokenId);
+  infusion.dailyRate = event.params.dailyRate;
   infusion.balance = data.value1;
   infusion.lastClaimAtTimestamp = data.value2;
+  infusion.save();
 
   // TODO: infusion events
-
-  infusion.save();
+  const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
+  const infusionEvent = new InfusionEvent(eventId)
+  infusionEvent.msgSender = event.transaction.from.toHexString();
+  infusionEvent.amount = event.params.amount;
+  infusionEvent.infusion = infusion.id;
+  infusionEvent.eventType = "INFUSE";
+  infusionEvent.target = event.params.infuser.toHexString();
+  infusionEvent.transactionHash = event.transaction.hash.toHexString();
+  infusionEvent.createdAtBlock = event.block.number;
+  infusionEvent.createdAtTimestamp = event.block.timestamp;
+  infusionEvent.comment = event.params.comment;
+  infusionEvent.save();
 }
 
 export function handleClaimed(event: Claimed): void {
