@@ -29,11 +29,73 @@ Generate AssemblyScript bindings from ABIs and graph schema:
 yarn codegen
 ```
 
+Ensure you have authorized with the graph-cli:
+
+```
+npx graph auth --product hosted-service $YOUR_AUTH_TOKEN
+```
+
 Deploy the subgraph:
 
 ```
 yarn deploy
 ```
+## Example Queries
 
+Get a list of all Realms:
 
+```graphql
+{
+  realms(orderBy: modifiedAtBlock, orderDirection: desc) {
+    id
+    name
+    description
+    token
+    modifiedAtTimestamp
+    createdAtTimestamp
+  }
+}
+```
+
+Get details and infused NFTs about a specific realm:
+
+```graphql
+{
+  realm(id: "3") {
+    id
+    name
+    description
+    token
+    createdAtBlock
+    createdAtTimestamp
+    modifiedAtBlock
+    modifiedAtTimestamp
+    minDailyRate
+    maxDailyRate
+    minInfusionAmount
+    maxInfusionAmount
+    maxTokenBalance
+    allowMultiInfuse
+    allowPublicInfusion
+    allowAllCollections
+    requireNftIsOwned
+    realmAdmins { account { address } }
+    realmInfusers { account { address } }
+    realmCollections { collection { address } }
+    infusions {
+      balance
+      dailyRate
+      lastClaimAtTimestamp
+      nft { tokenId collection { address } }
+      events {
+        createdAtTimestamp
+        target { address }
+        amount
+        eventType
+      }
+    }
+  }
+}
+
+```
 
