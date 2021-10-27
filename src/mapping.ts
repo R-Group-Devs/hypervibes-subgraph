@@ -113,7 +113,6 @@ export function handleInfused(event: Infused): void {
   infusion.lastClaimAtTimestamp = data.value2;
   infusion.save();
 
-  // TODO: infusion events
   const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
   const infusionEvent = new InfusionEvent(eventId)
   infusionEvent.msgSender = event.transaction.from.toHexString();
