@@ -42,6 +42,9 @@ yarn deploy
 ```
 ## Example Queries
 
+You can use the hosted service UI, or any GraphQL IDE, to explore the schema and
+possible queries via interactive introspection.
+
 Get a list of all Realms:
 
 ```graphql
