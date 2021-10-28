@@ -62,7 +62,7 @@ Get a list of all Realms:
 
 Get details about all infusions across all realms for a given NFT:
 
-```
+```graphql
 {
   nfts(
     where: {
