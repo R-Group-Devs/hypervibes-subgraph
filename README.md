@@ -60,6 +60,37 @@ Get a list of all Realms:
 }
 ```
 
+Get details about all infusions across all realms for a given NFT:
+
+```
+{
+  nfts(
+    where: {
+      collection: "0xc0877d217b1b83a3347c1703032ae1e013a8fd9f"
+      tokenId: "11"
+    }
+  ) {
+    tokenId
+    collection {
+      address
+    }
+    infusions {
+      realm { id name }
+      balance
+      lastClaimAtTimestamp
+      events {
+        eventType
+        amount
+        msgSender { address }
+        target { address }
+        createdAtTimestamp
+      }
+    }
+  }
+}
+
+```
+
 Get details and infused NFTs about a specific realm:
 
 ```graphql
@@ -99,6 +130,7 @@ Get details and infused NFTs about a specific realm:
     }
   }
 }
-
 ```
+
+
 
