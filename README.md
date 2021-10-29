@@ -13,7 +13,7 @@ Subgraph for HyperVIBES project.
 
 * mainnet - N/A
 * Polygon - N/A
-* Ropsten - https://thegraph.com/hosted-service/subgraph/r-group-devs/hypervibes-ropsten
+* Rinkeby - https://thegraph.com/hosted-service/subgraph/r-group-devs/hypervibes-rinkeby
 
 ## Development
 

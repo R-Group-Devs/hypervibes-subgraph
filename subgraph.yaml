@@ -4,12 +4,12 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: HyperVIBES
-    network: ropsten
+    network: rinkeby
     source:
       address: "0x76e9f19D76Ae534cFb754AFE9D9CC52395E5fFaF"
       abi: HyperVIBES
-      # https://ropsten.etherscan.io/tx/0xc6e7abdf734648fc94e78d26ac6a7786ab91782c81b800b1bb615662480e6e87
-      startBlock: 11262749
+      # https://rinkeby.etherscan.io/tx/0x3b963958d17615d601b3b5a56edf7f3f969b5068f6dc59650bc070a167b5e082
+      startBlock: 9551258
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5

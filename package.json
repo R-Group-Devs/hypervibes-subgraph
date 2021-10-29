@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ r-group-devs/hypervibes-ropsten",
-    "create-local": "graph create --node http://localhost:8020/ r-group-devs/hypervibes-ropsten",
-    "remove-local": "graph remove --node http://localhost:8020/ r-group-devs/hypervibes-ropsten",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 r-group-devs/hypervibes-ropsten"
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ r-group-devs/hypervibes-rinkeby",
+    "create-local": "graph create --node http://localhost:8020/ r-group-devs/hypervibes-rinkeby",
+    "remove-local": "graph remove --node http://localhost:8020/ r-group-devs/hypervibes-rinkeby",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 r-group-devs/hypervibes-rinkeby"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.23.0",
