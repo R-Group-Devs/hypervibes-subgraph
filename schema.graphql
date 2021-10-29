@@ -16,6 +16,7 @@ type Realm @entity {
   minInfusionAmount: BigInt!
   maxInfusionAmount: BigInt!
   maxTokenBalance: BigInt!
+  minClaimAmount: BigInt!
   requireNftIsOwned: Boolean!
   allowMultiInfuse: Boolean!
   allowPublicInfusion: Boolean!

@@ -40,6 +40,8 @@ export function handleRealmCreated(event: RealmCreated): void {
   realm.allowMultiInfuse = constraints.allowMultiInfuse;
   realm.allowPublicInfusion = constraints.allowPublicInfusion;
   realm.allowAllCollections = constraints.allowAllCollections;
+  realm.minClaimAmount = constraints.minClaimAmount;
+
 
   realm.save();
 }
