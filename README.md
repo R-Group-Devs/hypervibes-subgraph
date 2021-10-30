@@ -162,10 +162,11 @@ Get information about a specific account:
     # any accounts that can infuse on behalf of this account
     infusionProxiesAsInfuser { realm { id name } proxy { address } }
 
+    # find all discrete infusions this account has executed
     infusionEventsAsTarget(where:{ eventType: INFUSE }) {
       amount
-      infusion{
-        realm{id}
+      infusion {
+        realm { id name }
         nft { tokenId collection {address} }
       }
     }
