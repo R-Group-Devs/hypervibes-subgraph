@@ -49,12 +49,11 @@ Get a list of all Realms:
 
 ```graphql
 {
-  realms(orderBy: modifiedAtBlock, orderDirection: desc) {
+  realms(orderBy: createdAtTimestamp, orderDirection: desc) {
     id
     name
     description
     token
-    modifiedAtTimestamp
     createdAtTimestamp
   }
 }
@@ -71,13 +70,15 @@ Get details about all infusions across all realms for a given NFT:
     }
   ) {
     tokenId
-    collection {
-      address
-    }
+    collection { address }
+
+    # there will be 1 Infusion entity for-each Realm this NFT is infused in
     infusions {
       realm { id name }
       balance
       lastClaimAtTimestamp
+
+      # all discrete infusion and claim events will be here
       events {
         eventType
         amount
@@ -102,8 +103,9 @@ Get details and infused NFTs about a specific realm:
     token
     createdAtBlock
     createdAtTimestamp
-    modifiedAtBlock
-    modifiedAtTimestamp
+
+    # constraints
+
     minDailyRate
     maxDailyRate
     minInfusionAmount
@@ -113,9 +115,15 @@ Get details and infused NFTs about a specific realm:
     allowPublicInfusion
     allowAllCollections
     requireNftIsOwned
+
+    # configuration
+
     realmAdmins { account { address } }
     realmInfusers { account { address } }
     realmCollections { collection { address } }
+
+    # get all infused nfts, balances, info, and events (claims and infusions)
+
     infusions {
       balance
       dailyRate
@@ -126,6 +134,39 @@ Get details and infused NFTs about a specific realm:
         target { address }
         amount
         eventType
+      }
+    }
+  }
+}
+```
+
+Get information about a specific account:
+
+```graphql
+{
+  account(id:"0xa34c3476ae0c4863fc39e32c0e666219503bed9f") {
+    address
+
+    # realms this account is admin for
+    realmAdmins { realm { id name } }
+
+    # realms this account is an infuser for
+    realmInfusers { realm { id name } }
+
+    # realms this account has created
+    createdRealms {id name}
+
+    # any accounts this account can infuse on behalf of
+    infusionProxiesAsProxy { realm { id name } infuser { address } }
+
+    # any accounts that can infuse on behalf of this account
+    infusionProxiesAsInfuser { realm { id name } proxy { address } }
+
+    infusionEventsAsTarget(where:{ eventType: INFUSE }) {
+      amount
+      infusion{
+        realm{id}
+        nft { tokenId collection {address} }
       }
     }
   }
