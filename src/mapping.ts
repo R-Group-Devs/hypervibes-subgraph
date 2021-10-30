@@ -20,8 +20,10 @@ export function handleRealmCreated(event: RealmCreated): void {
 
   realm.name = event.params.name;
   realm.description = event.params.description;
+  realm.creator = getOrCreateAccount(event.transaction.from).id;
   realm.createdAtBlock = event.block.number;
   realm.createdAtTimestamp = event.block.timestamp;
+  realm.createdAtTransactionHash = event.transaction.hash.toHexString();
   realm.modifiedAtBlock = event.block.number;
   realm.modifiedAtTimestamp = event.block.timestamp;
 
@@ -42,7 +44,6 @@ export function handleRealmCreated(event: RealmCreated): void {
   realm.allowAllCollections = constraints.allowAllCollections;
   realm.minClaimAmount = constraints.minClaimAmount;
 
-
   realm.save();
 }
 
@@ -55,6 +56,7 @@ export function handleAdminAdded(event: AdminAdded): void {
   realmAdmin.account = account.id;
   realmAdmin.createdAtBlock = event.block.number;
   realmAdmin.createdAtTimestamp = event.block.timestamp;
+  realmAdmin.createdAtTransactionHash = event.transaction.hash.toHexString();
   realmAdmin.save();
 }
 
@@ -67,6 +69,7 @@ export function handleInfuserAdded(event: InfuserAdded): void {
   realmInfuser.account = account.id;
   realmInfuser.createdAtBlock = event.block.number;
   realmInfuser.createdAtTimestamp = event.block.timestamp;
+  realmInfuser.createdAtTransactionHash = event.transaction.hash.toHexString();
   realmInfuser.save();
 }
 
@@ -79,6 +82,7 @@ export function handleCollectionAdded(event: CollectionAdded): void {
   realmCollection.collection = collection.id;
   realmCollection.createdAtBlock = event.block.number;
   realmCollection.createdAtTimestamp = event.block.timestamp;
+  realmCollection.createdAtTransactionHash = event.transaction.hash.toHexString();
   realmCollection.save();
 }
 
@@ -117,14 +121,14 @@ export function handleInfused(event: Infused): void {
 
   const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
   const infusionEvent = new InfusionEvent(eventId)
-  infusionEvent.msgSender = event.transaction.from.toHexString();
   infusionEvent.amount = event.params.amount;
   infusionEvent.infusion = infusion.id;
   infusionEvent.eventType = "INFUSE";
-  infusionEvent.target = event.params.infuser.toHexString();
-  infusionEvent.transactionHash = event.transaction.hash.toHexString();
+  infusionEvent.msgSender = getOrCreateAccount(event.transaction.from).id;
+  infusionEvent.target = getOrCreateAccount(event.params.infuser).id;
   infusionEvent.createdAtBlock = event.block.number;
   infusionEvent.createdAtTimestamp = event.block.timestamp;
+  infusionEvent.createdAtTransactionHash = event.transaction.hash.toHexString();
   infusionEvent.comment = event.params.comment;
   infusionEvent.save();
 }

@@ -2,8 +2,10 @@ type Realm @entity {
   id: ID!
   name: String!
   description: String!
+  creator: Account!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
   modifiedAtBlock: BigInt!
   modifiedAtTimestamp: BigInt!
 
@@ -57,6 +59,7 @@ type RealmAdmin @entity {
   id: ID!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
   account: Account!
   realm: Realm!
 }
@@ -65,6 +68,7 @@ type RealmInfuser @entity {
   id: ID!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
   account: Account!
   realm: Realm!
 }
@@ -73,6 +77,7 @@ type RealmCollection @entity {
   id: ID!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
   collection: Collection!
   realm: Realm!
 }
@@ -98,10 +103,19 @@ type InfusionEvent @entity {
   eventType: InfusionEventType!
   msgSender: Account!
   target: Account!
-  transactionHash: String!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
   amount: BigInt!
   comment: String
 }
 
+type _Schema_ @fulltext(
+  name: "realmSearch"
+  language: en
+  algorithm: rank
+  include: [{
+    entity: "Realm",
+    fields: [{ name: "name" }, { name: "description" }]
+  }]
+)
