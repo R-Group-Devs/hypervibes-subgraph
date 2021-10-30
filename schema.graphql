@@ -40,6 +40,8 @@ type Account @entity {
   createdRealms: [Realm!]! @derivedFrom(field: "creator")
   infusionEventsAsMsgSender: [InfusionEvent!]! @derivedFrom(field: "msgSender")
   infusionEventsAsTarget: [InfusionEvent!]! @derivedFrom(field: "target")
+  infusionProxiesAsProxy: [InfusionProxy!]! @derivedFrom(field: "proxy")
+  infusionProxiesAsInfuser: [InfusionProxy!]! @derivedFrom(field: "infuser")
 }
 
 type NFT @entity {
@@ -109,6 +111,16 @@ type InfusionEvent @entity {
   createdAtTransactionHash: String!
   amount: BigInt!
   comment: String
+}
+
+type InfusionProxy @entity {
+  id: ID!
+  realm: Realm!
+  proxy: Account!
+  infuser: Account!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
 }
 
 type _Schema_ @fulltext(

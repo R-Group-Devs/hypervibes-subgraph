@@ -9,9 +9,11 @@ import {
   Infused,
   InfuserAdded,
   InfuserRemoved,
-  RealmCreated
+  RealmCreated,
+  InfusionProxyAdded,
+  InfusionProxyRemoved
 } from "../generated/HyperVIBES/HyperVIBES"
-import { InfusionEvent, Realm, RealmAdmin, RealmCollection, RealmInfuser } from '../generated/schema'
+import { InfusionEvent, InfusionProxy, Realm, RealmAdmin, RealmCollection, RealmInfuser } from '../generated/schema'
 import { getOrCreateAccount, getOrCreateCollection, getOrCreateInfusion, getOrCreateNft } from "./entities";
 
 export function handleRealmCreated(event: RealmCreated): void {
@@ -86,6 +88,21 @@ export function handleCollectionAdded(event: CollectionAdded): void {
   realmCollection.save();
 }
 
+export function handleInfusionProxyAdded(event: InfusionProxyAdded): void {
+  const realmId = event.params.realmId.toString();
+  const proxy = getOrCreateAccount(event.params.proxy);
+  const infuser = getOrCreateAccount(event.transaction.from);
+  const infusionProxyId = `${realmId}-${proxy.id}-${infuser.id}`;
+  const infusionProxy = new InfusionProxy(infusionProxyId);
+  infusionProxy.realm = realmId;
+  infusionProxy.proxy = proxy.id;
+  infusionProxy.infuser = infuser.id;
+  infusionProxy.createdAtBlock = event.block.number;
+  infusionProxy.createdAtTimestamp = event.block.timestamp;
+  infusionProxy.createdAtTransactionHash = event.transaction.hash.toString();
+  infusionProxy.save();
+}
+
 export function handleAdminRemoved(event: AdminRemoved): void {
   const realmId = event.params.realmId.toString();
   const adminId = event.params.admin.toHexString();
@@ -105,6 +122,14 @@ export function handleCollectionRemoved(event: CollectionRemoved): void {
   const collectionId = event.params.collection.toHexString();
   const realmCollectionId = `${realmId}-${collectionId}`;
   store.remove('RealmCollection', realmCollectionId)
+}
+
+export function handleInfusionProxyRemoved(event: InfusionProxyRemoved): void {
+  const realmId = event.params.realmId.toString();
+  const proxyId = event.params.proxy.toHexString();
+  const infuserId = event.transaction.from.toHexString();
+  const infusionProxyId = `${realmId}-${proxyId}-${infuserId}`;
+  store.remove('InfusionProxy', infusionProxyId);
 }
 
 export function handleInfused(event: Infused): void {
