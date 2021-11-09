@@ -6,10 +6,10 @@ dataSources:
     name: HyperVIBES
     network: rinkeby
     source:
-      address: "0x810F23b2fD12a7e989A6a13EC0fc655DDBf5303c"
+      address: "0xC53B8332AAcdB2dA3BaaC36264E91473D6362b20"
       abi: HyperVIBES
-      # https://rinkeby.etherscan.io/tx/0x3b963958d17615d601b3b5a56edf7f3f969b5068f6dc59650bc070a167b5e082
-      startBlock: 9551258
+      # https://rinkeby.etherscan.io/tx/0xc88b91bba61104ece8502c7129469e58eb68d8cccd6626d12688507d97d248ae
+      startBlock: 9609098
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
