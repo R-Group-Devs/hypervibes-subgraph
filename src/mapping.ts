@@ -31,12 +31,11 @@ export function handleRealmCreated(event: RealmCreated): void {
 
   const contract = HyperVIBES.bind(event.address);
   const config = contract.realmConfig(realmId);
-  const constraints = config.value1;
+  const constraints = config.value2;
 
   realm.token = config.value0.toHexString();
+  realm.dailyRate = config.value1;
 
-  realm.minDailyRate = constraints.minDailyRate;
-  realm.maxDailyRate = constraints.maxDailyRate;
   realm.minInfusionAmount = constraints.minInfusionAmount;
   realm.maxInfusionAmount = constraints.maxInfusionAmount;
   realm.maxTokenBalance = constraints.maxTokenBalance;
@@ -139,9 +138,8 @@ export function handleInfused(event: Infused): void {
   const infusion = getOrCreateInfusion(realmId, nft);
   const contract = HyperVIBES.bind(event.address);
   const data = contract.tokenData(event.params.realmId, event.params.collection, event.params.tokenId);
-  infusion.dailyRate = event.params.dailyRate;
-  infusion.balance = data.value1;
-  infusion.lastClaimAtTimestamp = data.value2;
+  infusion.balance = data.value0;
+  infusion.lastClaimAtTimestamp = data.value1;
   infusion.save();
 
   const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;

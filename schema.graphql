@@ -10,11 +10,10 @@ type Realm @entity {
   modifiedAtTimestamp: BigInt!
 
   token: String!
+  dailyRate: BigInt!
 
   # constraints
 
-  minDailyRate: BigInt!
-  maxDailyRate: BigInt!
   minInfusionAmount: BigInt!
   maxInfusionAmount: BigInt!
   maxTokenBalance: BigInt!
@@ -89,7 +88,6 @@ type Infusion @entity {
   id: ID!
   realm: Realm!
   nft: NFT!
-  dailyRate: BigInt!
   balance: BigInt!
   lastClaimAtTimestamp: BigInt!
   events: [InfusionEvent!]! @derivedFrom(field: "infusion")

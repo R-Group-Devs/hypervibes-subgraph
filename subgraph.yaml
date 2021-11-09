@@ -29,7 +29,7 @@ dataSources:
           handler: handleCollectionAdded
         - event: CollectionRemoved(indexed uint256,indexed address)
           handler: handleCollectionRemoved
-        - event: Infused(indexed uint256,indexed address,indexed uint256,address,uint256,uint256,string)
+        - event: Infused(indexed uint256,indexed address,indexed uint256,address,uint256,string)
           handler: handleInfused
         - event: InfuserAdded(indexed uint256,indexed address)
           handler: handleInfuserAdded
