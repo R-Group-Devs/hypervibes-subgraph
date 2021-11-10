@@ -135,6 +135,7 @@ export function handleInfused(event: Infused): void {
   const nft = getOrCreateNft(event.params.collection, event.params.tokenId);
   const realmId = event.params.realmId.toString();
 
+  // update infusion with latest balance
   const infusion = getOrCreateInfusion(realmId, nft);
   const contract = HyperVIBES.bind(event.address);
   const data = contract.tokenData(event.params.realmId, event.params.collection, event.params.tokenId);
@@ -142,6 +143,7 @@ export function handleInfused(event: Infused): void {
   infusion.lastClaimAtTimestamp = data.value1;
   infusion.save();
 
+  // create the infusion event
   const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
   const infusionEvent = new InfusionEvent(eventId)
   infusionEvent.amount = event.params.amount;
@@ -157,7 +159,29 @@ export function handleInfused(event: Infused): void {
 }
 
 export function handleClaimed(event: Claimed): void {
-  // TODO
+  const nft = getOrCreateNft(event.params.collection, event.params.tokenId);
+  const realmId = event.params.realmId.toString();
+
+  const infusion = getOrCreateInfusion(realmId, nft);
+  const contract = HyperVIBES.bind(event.address);
+  const data = contract.tokenData(event.params.realmId, event.params.collection, event.params.tokenId);
+  infusion.balance = data.value0;
+  infusion.lastClaimAtTimestamp = data.value1;
+  infusion.save();
+
+  // create the infusion event
+  const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
+  const infusionEvent = new InfusionEvent(eventId)
+  infusionEvent.amount = event.params.amount;
+  infusionEvent.infusion = infusion.id;
+  infusionEvent.eventType = "CLAIM";
+  infusionEvent.msgSender = getOrCreateAccount(event.transaction.from).id;
+  infusionEvent.target = getOrCreateAccount(event.transaction.from).id;
+  infusionEvent.createdAtBlock = event.block.number;
+  infusionEvent.createdAtTimestamp = event.block.timestamp;
+  infusionEvent.createdAtTransactionHash = event.transaction.hash.toHexString();
+  infusionEvent.comment = "";
+  infusionEvent.save();
 }
 
 
