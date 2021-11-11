@@ -1,5 +1,7 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { Account, Collection, Infusion, NFT } from '../generated/schema'
+import { ERC721Datasource } from "../generated/templates";
+import { ERC721 } from "../generated/HyperVIBES/ERC721";
 
 export const getOrCreateAccount = (address: Address): Account => {
   const id = address.toHexString();
@@ -22,6 +24,10 @@ export const getOrCreateCollection = (collectionAddress: Address): Collection =>
   collection = new Collection(id);
   collection.address = id;
   collection.save();
+
+  // create a new data source to watch transfer events and update nft owners
+  ERC721Datasource.create(collectionAddress);
+
   return collection;
 }
 
@@ -32,9 +38,14 @@ export const getOrCreateNft = (collectionAddress: Address, tokenId: BigInt): NFT
   if (nft != null) {
     return nft;
   }
+
   nft = new NFT(nftId);
   nft.tokenId = tokenId;
   nft.collection = collection.id;
+
+  const contract = ERC721.bind(collectionAddress);
+  nft.owner = getOrCreateAccount(contract.ownerOf(tokenId)).id;
+
   nft.save();
   return nft;
 }

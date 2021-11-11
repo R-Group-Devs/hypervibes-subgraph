@@ -34,6 +34,7 @@ type Realm @entity {
 type Account @entity {
   id: ID!
   address: String!
+  ownedNFTs: [NFT!]! @derivedFrom(field: "owner")
   realmAdmins: [RealmAdmin!]! @derivedFrom(field: "account")
   realmInfusers: [RealmInfuser!]! @derivedFrom(field: "account")
   createdRealms: [Realm!]! @derivedFrom(field: "creator")
@@ -46,6 +47,7 @@ type Account @entity {
 type NFT @entity {
   id: ID!
   tokenId: BigInt!
+  owner: Account!
   collection: Collection!
   infusions: [Infusion!]! @derivedFrom(field: "nft")
 }
