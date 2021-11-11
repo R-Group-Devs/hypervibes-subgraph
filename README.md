@@ -167,7 +167,7 @@ Get information about a specific account:
       amount
       infusion {
         realm { id name }
-        nft { tokenId collection {address} }
+        nft { tokenId collection {address} owner { address } }
       }
     }
   }
