@@ -63,14 +63,10 @@ Get details about all infusions across all realms for a given NFT:
 
 ```graphql
 {
-  nfts(
-    where: {
-      collection: "0xc0877d217b1b83a3347c1703032ae1e013a8fd9f"
-      tokenId: "11"
-    }
-  ) {
+  nfts(where: { collection: "0xc0877d217b1b83a3347c1703032ae1e013a8fd9f" tokenId: "11" }) {
     tokenId
     collection { address }
+    owner { address }
 
     # there will be 1 Infusion entity for-each Realm this NFT is infused in
     infusions {
@@ -89,7 +85,6 @@ Get details about all infusions across all realms for a given NFT:
     }
   }
 }
-
 ```
 
 Get details and infused NFTs about a specific realm:
@@ -103,11 +98,10 @@ Get details and infused NFTs about a specific realm:
     token
     createdAtBlock
     createdAtTimestamp
+    dailyRate
 
     # constraints
 
-    minDailyRate
-    maxDailyRate
     minInfusionAmount
     maxInfusionAmount
     maxTokenBalance
@@ -126,9 +120,8 @@ Get details and infused NFTs about a specific realm:
 
     infusions {
       balance
-      dailyRate
       lastClaimAtTimestamp
-      nft { tokenId collection { address } }
+      nft { tokenId collection { address } owner { address } }
       events {
         createdAtTimestamp
         target { address }
@@ -161,6 +154,13 @@ Get information about a specific account:
 
     # any accounts that can infuse on behalf of this account
     infusionProxiesAsInfuser { realm { id name } proxy { address } }
+
+    # all nfts owned by this account that have been infused across all realms
+    ownedNFTs {
+      tokenId
+      collection { address }
+      infusions { realm { id name } balance }
+    }
 
     # find all discrete infusions this account has executed
     infusionEventsAsTarget(where:{ eventType: INFUSE }) {
