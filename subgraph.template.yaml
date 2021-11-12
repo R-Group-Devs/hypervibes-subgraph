@@ -4,12 +4,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: HyperVIBES
-    network: rinkeby
+    network: {{network}}
     source:
-      address: "0xe40d31e51bEc80ba5Bd1A1074134FA61cc557927"
+      address: "{{contractAddress}}"
       abi: HyperVIBES
-      # https://rinkeby.etherscan.io/tx/0xda3290198957a565f6d2870f9140a59e66c23cc0862dd9868e2752ed1fe89917
-      startBlock: 9621816
+      startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -47,7 +46,7 @@ dataSources:
 templates:
   - name: ERC721Datasource
     kind: ethereum/contract
-    network: rinkeby
+    network: {{network}}
     source:
       abi: ERC721
     mapping:

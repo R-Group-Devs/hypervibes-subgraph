@@ -4,13 +4,14 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ r-group-devs/hypervibes-rinkeby",
-    "create-local": "graph create --node http://localhost:8020/ r-group-devs/hypervibes-rinkeby",
-    "remove-local": "graph remove --node http://localhost:8020/ r-group-devs/hypervibes-rinkeby",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 r-group-devs/hypervibes-rinkeby"
+    "prepare": "mustache config/${NETWORK:-rinkeby}.json subgraph.template.yaml > subgraph.yaml",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ r-group-devs/hypervibes-${NETWORK:-rinkeby}"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.23.0",
     "@graphprotocol/graph-ts": "0.22.1"
+  },
+  "devDependencies": {
+    "mustache": "4.2.0"
   }
 }

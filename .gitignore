@@ -4,3 +4,6 @@ node_modules/
 .env
 yarn-error.log
 cache
+
+# generated from template
+subgraph.yaml
