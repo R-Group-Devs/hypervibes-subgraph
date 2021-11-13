@@ -93,7 +93,7 @@ export function handleProxyAdded(event: ProxyAdded): void {
   const proxyId = `${realmId}-${proxyAccount.id}-${delegator.id}`;
   const proxy = new Proxy(proxyId);
   proxy.realm = realmId;
-  proxy.proxy = proxy.id;
+  proxy.proxy = proxyAccount.id;
   proxy.delegator = delegator.id;
   proxy.createdAtBlock = event.block.number;
   proxy.createdAtTimestamp = event.block.timestamp;

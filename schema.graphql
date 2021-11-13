@@ -39,8 +39,8 @@ type Account @entity {
   createdRealms: [Realm!]! @derivedFrom(field: "creator")
   infusionEventsAsMsgSender: [InfusionEvent!]! @derivedFrom(field: "msgSender")
   infusionEventsAsTarget: [InfusionEvent!]! @derivedFrom(field: "target")
-  proxyFor: [Proxy!]! @derivedFrom(field: "proxy")
-  delegatedTo: [Proxy!]! @derivedFrom(field: "delegator")
+  proxiesAsProxy: [Proxy!]! @derivedFrom(field: "proxy")
+  proxiesAsDelegator: [Proxy!]! @derivedFrom(field: "delegator")
 }
 
 type NFT @entity {
