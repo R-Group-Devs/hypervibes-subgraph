@@ -10,10 +10,10 @@ import {
   InfuserAdded,
   InfuserRemoved,
   RealmCreated,
-  InfusionProxyAdded,
-  InfusionProxyRemoved
+  ProxyAdded,
+  ProxyRemoved,
 } from "../generated/HyperVIBES/HyperVIBES"
-import { InfusionEvent, InfusionProxy, Realm, RealmAdmin, RealmCollection, RealmInfuser } from '../generated/schema'
+import { InfusionEvent, Realm, RealmAdmin, RealmCollection, RealmInfuser, Proxy } from '../generated/schema'
 import { getOrCreateAccount, getOrCreateCollection, getOrCreateInfusion, getOrCreateNft } from "./entities";
 
 export function handleRealmCreated(event: RealmCreated): void {
@@ -37,7 +37,6 @@ export function handleRealmCreated(event: RealmCreated): void {
   realm.dailyRate = config.value1;
 
   realm.minInfusionAmount = constraints.minInfusionAmount;
-  realm.maxInfusionAmount = constraints.maxInfusionAmount;
   realm.maxTokenBalance = constraints.maxTokenBalance;
   realm.requireNftIsOwned = constraints.requireNftIsOwned;
   realm.allowMultiInfuse = constraints.allowMultiInfuse;
@@ -87,19 +86,19 @@ export function handleCollectionAdded(event: CollectionAdded): void {
   realmCollection.save();
 }
 
-export function handleInfusionProxyAdded(event: InfusionProxyAdded): void {
+export function handleProxyAdded(event: ProxyAdded): void {
   const realmId = event.params.realmId.toString();
-  const proxy = getOrCreateAccount(event.params.proxy);
-  const infuser = getOrCreateAccount(event.transaction.from);
-  const infusionProxyId = `${realmId}-${proxy.id}-${infuser.id}`;
-  const infusionProxy = new InfusionProxy(infusionProxyId);
-  infusionProxy.realm = realmId;
-  infusionProxy.proxy = proxy.id;
-  infusionProxy.infuser = infuser.id;
-  infusionProxy.createdAtBlock = event.block.number;
-  infusionProxy.createdAtTimestamp = event.block.timestamp;
-  infusionProxy.createdAtTransactionHash = event.transaction.hash.toString();
-  infusionProxy.save();
+  const proxyAccount = getOrCreateAccount(event.params.proxy);
+  const delegator = getOrCreateAccount(event.transaction.from);
+  const proxyId = `${realmId}-${proxyAccount.id}-${delegator.id}`;
+  const proxy = new Proxy(proxyId);
+  proxy.realm = realmId;
+  proxy.proxy = proxy.id;
+  proxy.delegator = delegator.id;
+  proxy.createdAtBlock = event.block.number;
+  proxy.createdAtTimestamp = event.block.timestamp;
+  proxy.createdAtTransactionHash = event.transaction.hash.toString();
+  proxy.save();
 }
 
 export function handleAdminRemoved(event: AdminRemoved): void {
@@ -123,12 +122,12 @@ export function handleCollectionRemoved(event: CollectionRemoved): void {
   store.remove('RealmCollection', realmCollectionId)
 }
 
-export function handleInfusionProxyRemoved(event: InfusionProxyRemoved): void {
+export function handleProxyRemoved(event: ProxyRemoved): void {
   const realmId = event.params.realmId.toString();
-  const proxyId = event.params.proxy.toHexString();
-  const infuserId = event.transaction.from.toHexString();
-  const infusionProxyId = `${realmId}-${proxyId}-${infuserId}`;
-  store.remove('InfusionProxy', infusionProxyId);
+  const proxyAccountId = event.params.proxy.toHexString();
+  const delegatorId = event.transaction.from.toHexString();
+  const proxyId = `${realmId}-${proxyAccountId}-${delegatorId}`;
+  store.remove('Proxy', proxyId);
 }
 
 export function handleInfused(event: Infused): void {

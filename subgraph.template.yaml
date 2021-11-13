@@ -38,10 +38,10 @@ dataSources:
           handler: handleInfuserRemoved
         - event: RealmCreated(indexed uint256,string,string)
           handler: handleRealmCreated
-        - event: InfusionProxyAdded(indexed uint256,indexed address)
-          handler: handleInfusionProxyAdded
-        - event: InfusionProxyRemoved(indexed uint256,indexed address)
-          handler: handleInfusionProxyRemoved
+        - event: ProxyAdded(indexed uint256,indexed address)
+          handler: handleProxyAdded
+        - event: ProxyRemoved(indexed uint256,indexed address)
+          handler: handleProxyRemoved
       file: ./src/mapping.ts
 templates:
   - name: ERC721Datasource

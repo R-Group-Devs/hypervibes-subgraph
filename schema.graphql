@@ -15,7 +15,6 @@ type Realm @entity {
   # constraints
 
   minInfusionAmount: BigInt!
-  maxInfusionAmount: BigInt!
   maxTokenBalance: BigInt!
   minClaimAmount: BigInt!
   requireNftIsOwned: Boolean!
@@ -40,8 +39,8 @@ type Account @entity {
   createdRealms: [Realm!]! @derivedFrom(field: "creator")
   infusionEventsAsMsgSender: [InfusionEvent!]! @derivedFrom(field: "msgSender")
   infusionEventsAsTarget: [InfusionEvent!]! @derivedFrom(field: "target")
-  infusionProxiesAsProxy: [InfusionProxy!]! @derivedFrom(field: "proxy")
-  infusionProxiesAsInfuser: [InfusionProxy!]! @derivedFrom(field: "infuser")
+  proxyFor: [Proxy!]! @derivedFrom(field: "proxy")
+  delegatedTo: [Proxy!]! @derivedFrom(field: "delegator")
 }
 
 type NFT @entity {
@@ -113,11 +112,11 @@ type InfusionEvent @entity {
   comment: String
 }
 
-type InfusionProxy @entity {
+type Proxy @entity {
   id: ID!
   realm: Realm!
   proxy: Account!
-  infuser: Account!
+  delegator: Account!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
   createdAtTransactionHash: String!
