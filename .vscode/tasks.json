@@ -4,7 +4,7 @@
     {
       "label": "🚀 deploy subgraph",
       "type": "shell",
-      "command": "yarn codegen && NETWORK=${input:network} yarn prepare && NETWORK=${input:network} yarn deploy && rm subgraph.yaml",
+      "command": "NETWORK=${input:network} yarn prepare && yarn codegen && NETWORK=${input:network} yarn deploy && rm subgraph.yaml",
       "problemMatcher": []
     },
   ],
