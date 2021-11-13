@@ -12,8 +12,10 @@ import {
   RealmCreated,
   ProxyAdded,
   ProxyRemoved,
+  ClaimerAdded,
+  ClaimerRemoved,
 } from "../generated/HyperVIBES/HyperVIBES"
-import { InfusionEvent, Realm, RealmAdmin, RealmCollection, RealmInfuser, Proxy } from '../generated/schema'
+import { InfusionEvent, Realm, RealmAdmin, RealmCollection, RealmInfuser, Proxy, RealmClaimer } from '../generated/schema'
 import { getOrCreateAccount, getOrCreateCollection, getOrCreateInfusion, getOrCreateNft } from "./entities";
 
 export function handleRealmCreated(event: RealmCreated): void {
@@ -73,6 +75,19 @@ export function handleInfuserAdded(event: InfuserAdded): void {
   realmInfuser.save();
 }
 
+export function handleClaimerAdded(event: ClaimerAdded): void {
+  const account = getOrCreateAccount(event.params.claimer);
+  const realmId = event.params.realmId.toString();
+  const realmClaimerId = `${realmId}-${account.id}`;
+  const realmClaimer = new RealmClaimer(realmClaimerId);
+  realmClaimer.realm = realmId;
+  realmClaimer.account = account.id;
+  realmClaimer.createdAtBlock = event.block.number;
+  realmClaimer.createdAtTimestamp = event.block.timestamp;
+  realmClaimer.createdAtTransactionHash = event.transaction.hash.toHexString();
+  realmClaimer.save();
+}
+
 export function handleCollectionAdded(event: CollectionAdded): void {
   const collection = getOrCreateCollection(event.params.collection);
   const realmId = event.params.realmId.toString();
@@ -113,6 +128,13 @@ export function handleInfuserRemoved(event: InfuserRemoved): void {
   const infuserId = event.params.infuser.toHexString();
   const realmInfuserId = `${realmId}-${infuserId}`;
   store.remove('RealmInufser', realmInfuserId)
+}
+
+export function handleClaimerRemoved(event: ClaimerRemoved): void {
+  const realmId = event.params.realmId.toString();
+  const claimerId = event.params.claimer.toHexString();
+  const realmClaimerId = `${realmId}-${claimerId}`;
+  store.remove('RealmClaimer`', realmClaimerId)
 }
 
 export function handleCollectionRemoved(event: CollectionRemoved): void {

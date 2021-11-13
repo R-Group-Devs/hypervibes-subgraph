@@ -26,6 +26,7 @@ type Realm @entity {
 
   realmAdmins: [RealmAdmin!]! @derivedFrom(field: "realm")
   realmInfusers: [RealmInfuser!]! @derivedFrom(field: "realm")
+  realmClaimers: [RealmClaimer!]! @derivedFrom(field: "realm")
   realmCollections: [RealmCollection!]! @derivedFrom(field: "realm")
   infusions: [Infusion!]! @derivedFrom(field: "realm")
 }
@@ -68,6 +69,15 @@ type RealmAdmin @entity {
 }
 
 type RealmInfuser @entity {
+  id: ID!
+  createdAtBlock: BigInt!
+  createdAtTimestamp: BigInt!
+  createdAtTransactionHash: String!
+  account: Account!
+  realm: Realm!
+}
+
+type RealmClaimer @entity {
   id: ID!
   createdAtBlock: BigInt!
   createdAtTimestamp: BigInt!
