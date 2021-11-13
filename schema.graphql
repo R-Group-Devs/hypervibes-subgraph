@@ -37,6 +37,7 @@ type Account @entity {
   ownedNFTs: [NFT!]! @derivedFrom(field: "owner")
   realmAdmins: [RealmAdmin!]! @derivedFrom(field: "account")
   realmInfusers: [RealmInfuser!]! @derivedFrom(field: "account")
+  realmClaimers: [RealmInfuser!]! @derivedFrom(field: "account")
   createdRealms: [Realm!]! @derivedFrom(field: "creator")
   infusionEventsAsMsgSender: [InfusionEvent!]! @derivedFrom(field: "msgSender")
   infusionEventsAsTarget: [InfusionEvent!]! @derivedFrom(field: "target")
