@@ -1,5 +1,5 @@
 {
-	"contractAddress": "0xe40d31e51bEc80ba5Bd1A1074134FA61cc557927",
 	"network": "rinkeby",
-	"startBlock": "9621816"
+	"startBlock": "9636195",
+	"contractAddress": "0xC47238d8d7468E6F45f2f4a5a4506BD5eEACC5B3"
 }

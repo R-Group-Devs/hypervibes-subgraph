@@ -1,5 +1,5 @@
 {
-	"contractAddress": "0x9Dd0d07224bAA34Da65709927f99BEe6DAFE6862",
 	"network": "ropsten",
-	"startBlock": "11404154"
+	"startBlock": "11420434",
+	"contractAddress": "0xdd6C37Cff83609Db2B3C1BA6461eF321C9ed0A80"
 }
