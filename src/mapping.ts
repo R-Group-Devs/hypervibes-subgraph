@@ -43,6 +43,7 @@ export function handleRealmCreated(event: RealmCreated): void {
   realm.requireNftIsOwned = constraints.requireNftIsOwned;
   realm.allowMultiInfuse = constraints.allowMultiInfuse;
   realm.allowPublicInfusion = constraints.allowPublicInfusion;
+  realm.allowPublicClaiming = constraints.allowPublicClaiming;
   realm.allowAllCollections = constraints.allowAllCollections;
   realm.minClaimAmount = constraints.minClaimAmount;
 
