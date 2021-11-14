@@ -166,7 +166,7 @@ export function handleInfused(event: Infused): void {
   infusion.save();
 
   // create the infusion event
-  const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
+  const eventId = `${event.block.hash.toHexString()}-${event.transaction.hash.toHexString()}-${event.logIndex}`;
   const infusionEvent = new InfusionEvent(eventId)
   infusionEvent.amount = event.params.amount;
   infusionEvent.infusion = infusion.id;
@@ -192,7 +192,7 @@ export function handleClaimed(event: Claimed): void {
   infusion.save();
 
   // create the infusion event
-  const eventId = `${event.block.hash}-${event.transaction.hash}-${event.logIndex}`;
+  const eventId = `${event.block.hash.toHexString()}-${event.transaction.hash.toHexString()}-${event.logIndex}`;
   const infusionEvent = new InfusionEvent(eventId)
   infusionEvent.amount = event.params.amount;
   infusionEvent.infusion = infusion.id;
