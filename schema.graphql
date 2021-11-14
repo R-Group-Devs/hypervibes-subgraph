@@ -9,7 +9,7 @@ type Realm @entity {
   modifiedAtBlock: BigInt!
   modifiedAtTimestamp: BigInt!
 
-  token: String!
+  token: Token!
   dailyRate: BigInt!
 
   # constraints
@@ -50,13 +50,24 @@ type NFT @entity {
   id: ID!
   tokenId: BigInt!
   owner: Account!
+  tokenUri: String
   collection: Collection!
   infusions: [Infusion!]! @derivedFrom(field: "nft")
+}
+
+type Token @entity {
+  id: ID!
+  address: String!
+  symbol: String
+  decimals: Int
+  realms: [Realm!]! @derivedFrom(field: "token")
 }
 
 type Collection @entity {
   id: ID!
   address: String!
+  name: String
+  symbol: String
   nfts: [NFT!]! @derivedFrom(field: "collection")
   realmCollections: [RealmCollection!]! @derivedFrom(field: "collection")
 }

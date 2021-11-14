@@ -16,7 +16,7 @@ import {
   ClaimerRemoved,
 } from "../generated/HyperVIBES/HyperVIBES"
 import { InfusionEvent, Realm, RealmAdmin, RealmCollection, RealmInfuser, Proxy, RealmClaimer } from '../generated/schema'
-import { getOrCreateAccount, getOrCreateCollection, getOrCreateInfusion, getOrCreateNft } from "./entities";
+import { getOrCreateAccount, getOrCreateCollection, getOrCreateInfusion, getOrCreateNft, getOrCreateToken } from "./entities";
 
 export function handleRealmCreated(event: RealmCreated): void {
   const realmId = event.params.realmId;
@@ -35,7 +35,7 @@ export function handleRealmCreated(event: RealmCreated): void {
   const config = contract.realmConfig(realmId);
   const constraints = config.value2;
 
-  realm.token = config.value0.toHexString();
+  realm.token = getOrCreateToken(config.value0).id;
   realm.dailyRate = config.value1;
 
   realm.minInfusionAmount = constraints.minInfusionAmount;
