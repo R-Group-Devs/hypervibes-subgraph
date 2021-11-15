@@ -58,6 +58,7 @@ type NFT @entity {
 type Token @entity {
   id: ID!
   address: String!
+  name: String
   symbol: String
   decimals: Int
   realms: [Realm!]! @derivedFrom(field: "token")

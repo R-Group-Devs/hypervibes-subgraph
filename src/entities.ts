@@ -67,6 +67,7 @@ export const getOrCreateToken = (tokenAddress: Address): Token => {
   token.address = tokenId;
 
   const contract = ERC20.bind(tokenAddress);
+  token.name = contract.try_name().value;
   token.symbol = contract.try_symbol().value;
   token.decimals = contract.try_decimals().value;
   token.save();
